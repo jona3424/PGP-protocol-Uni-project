@@ -1,1 +1,1 @@
-{"compress": true, "radix64": true, "encryption_algo": "AES128", "sign": true}
+{"compress": true, "radix64": false, "encryption_algo": "AES128", "sign": true}

@@ -5,22 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b954037b-6cfe-47c2-a218-f56f25c04a6e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/g_g_key_set1/g_g_private_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/g_g_key_set1/g_g_public_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hello_kitty.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/n_n_key_set1/n_n_private_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/n_n_key_set1/n_n_public_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set1/nikola_nikola@gmail.com_private_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set1/nikola_nikola@gmail.com_public_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set2/nikola_nikola@gmail.com_private_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set2/nikola_nikola@gmail.com_public_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set3/nikola_nikola@gmail.com_private_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set3/nikola_nikola@gmail.com_public_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vanja_vanjy@gmail.com_key_set1/vanja_vanjy@gmail.com_private_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vanja_vanjy@gmail.com_key_set1/vanja_vanjy@gmail.com_public_key.pem" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/encrypted_message.txt" beforeDir="false" afterPath="$PROJECT_DIR$/encrypted_message.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/encryption_key.txt" beforeDir="false" afterPath="$PROJECT_DIR$/encryption_key.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finalporuka.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/metadata.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nikola_nikola@example.com_private_key.pem" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nikola_nikola@example.com_public_key.pem" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/signature.txt" beforeDir="false" afterPath="$PROJECT_DIR$/signature.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vanja_vanja@example.com_private_key.pem" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vanja_vanja@example.com_public_key.pem" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +41,31 @@
     &quot;assignee&quot;: &quot;jona3424&quot;
   }
 }</component>
+  <component name="GitToolBoxStore">
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="nikoly-working" />
+                    <option name="lastUsedInstant" value="1718474884" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="master" />
+                    <option name="lastUsedInstant" value="1718474883" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
+  </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/jona3424/Zp-projekat.git&quot;,
@@ -60,21 +83,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Python.main.executor": "Run",
+    "Python.test.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "nikoly-working",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\petri\OneDrive\Desktop\zp proj\pythonProject" />
@@ -165,7 +188,7 @@
       <workItem from="1718326878572" duration="65000" />
       <workItem from="1718391618687" duration="1062000" />
       <workItem from="1718393375780" duration="937000" />
-      <workItem from="1718452864987" duration="6948000" />
+      <workItem from="1718452864987" duration="17706000" />
     </task>
     <servers />
   </component>
@@ -186,8 +209,24 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>185</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>337</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pythonProject$test.coverage" NAME="test Coverage Results" MODIFIED="1718391664024" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/pythonProject$main.coverage" NAME="main Coverage Results" MODIFIED="1718468758612" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/pythonProject$main.coverage" NAME="main Coverage Results" MODIFIED="1718485503234" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -204,28 +204,18 @@ def encrypt_and_sign_message(message, recipient_public_key_path, encryption_algo
     }
 
     encrypted_message = message
-    encryption_key = None
-    if encryption_algo:
-        encryption_key = os.urandom(32) if encryption_algo == "AES128" else os.urandom(24)  # Key length
-        if encryption_algo == "AES128":
-            iv = os.urandom(16)
-            cipher = Cipher(algorithms.AES(encryption_key), modes.CFB(iv), backend=default_backend())
-        elif encryption_algo == "TripleDES":
-            iv = os.urandom(8)
-            cipher = Cipher(algorithms.TripleDES(encryption_key), modes.CFB(iv), backend=default_backend())
-        else:
-            messagebox.showerror("Error", "Unsupported encryption algorithm selected.")
-            return
-
-        encryptor = cipher.encryptor()
-        encrypted_message = encryptor.update(message.encode()) + encryptor.finalize()
-        encrypted_message = iv + encrypted_message
-
-    if compress:
-        encrypted_message = zlib.compress(encrypted_message)
-
-    if radix64:
-        encrypted_message = base64.b64encode(encrypted_message).decode()
+    #there are 3 cases first when we jus want to sign then when we want just to encrypt and when we want to encrypt and sign
+    #after all that we check if we want to convert the message to radix64
+    #if we want to sign the message we just sign it and then check zip flag and zip if needed
+    #if we want to encrypt the message we first zip the message if needed and then encrypt it also we need to encrypt the simetric enctyption_key with the public key of the reciever
+    #if we want to encrypt and sign we first sign the message zip if needed and then we encrypt the message and the encryption_key and also we need to encrypt the simetric enctyption_key with the public key of the reciever
+    #encrypt the message is done by aes or tripledes algorithms based on what is user choice
+    #after all that we check if we want to convert the message to radix64 for every case
+    #if we want to convert the message to radix64 we do that
+    #after all that we save the message to the file
+    #if we have a signature we save it to the file
+    #if we have a encryption_key we save it to the file
+    #we save metadata to the file
 
     signature = None
     if sign:
@@ -242,10 +232,64 @@ def encrypt_and_sign_message(message, recipient_public_key_path, encryption_algo
                 padding.PKCS1v15(),
                 hashes.SHA1()
             )
-            signature = base64.b64encode(signature).decode()
+            if compress:
+                signature = zlib.compress(signature)
+            if radix64:
+                signature = base64.b64encode(signature).decode()
         except Exception as e:
             messagebox.showerror("Error", f"Signing failed: {e}")
             return
+
+
+    encryption_key = None
+    if encryption_algo:
+        encryption_key = os.urandom(32) if encryption_algo == "AES128" else os.urandom(24)  # Key length
+        if encryption_algo == "AES128":
+            iv = os.urandom(16)
+            cipher = Cipher(algorithms.AES(encryption_key), modes.CFB(iv), backend=default_backend())
+        elif encryption_algo == "TripleDES":
+            iv = os.urandom(8)
+            cipher = Cipher(algorithms.TripleDES(encryption_key), modes.CFB(iv), backend=default_backend())
+        else:
+            messagebox.showerror("Error", "Unsupported encryption algorithm selected.")
+            return
+
+        encryptor = cipher.encryptor()
+
+        if compress:
+            message = zlib.compress(message.encode())
+            encrypted_message = encryptor.update(message) + encryptor.finalize()
+        else:
+            encrypted_message = encryptor.update(message.encode()) + encryptor.finalize()
+
+        encrypted_message = iv + encrypted_message
+
+        if radix64:
+            encrypted_message = base64.b64encode(encrypted_message).decode()
+
+    if not encryption_algo:
+        if compress:
+            encrypted_message = zlib.compress(message.encode())
+        if radix64:
+            encrypted_message = base64.b64encode(encrypted_message).decode()
+
+
+    #encode this encryprion key wirh the public key of the reciever
+    if encryption_key:
+        with open(recipient_public_key_path, 'rb') as f:
+            recipient_public_key_pem = f.read()
+        recipient_public_key = serialization.load_pem_public_key(
+            recipient_public_key_pem,
+            backend=default_backend()
+        )
+        encryption_key = recipient_public_key.encrypt(
+            encryption_key,
+            padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA1()),
+                algorithm=hashes.SHA1(),
+                label=None
+            )
+        )
 
     save_path = filedialog.askdirectory(title="Select Destination Directory")
     if not save_path:
@@ -261,41 +305,69 @@ def encrypt_and_sign_message(message, recipient_public_key_path, encryption_algo
         if radix64:
             with open(encrypted_message_path, 'w') as f:
                 f.write(encrypted_message)
+            if signature:
+                with open(signature_path, 'w') as f:
+                    f.write(signature)
+        elif not radix64 and not signature and not encryption_algo:
+            with open(encrypted_message_path, 'w') as f:
+                f.write(encrypted_message)
         else:
             with open(encrypted_message_path, 'wb') as f:
                 f.write(encrypted_message)
 
+            if signature:
+                with open(signature_path, 'wb') as f:
+                    f.write(signature)
+
+
         with open(metadata_path, 'w') as f:
             json.dump(metadata, f)
-        if signature:
-            with open(signature_path, 'w') as f:
-                f.write(signature)
+
         if encryption_key:
             with open(encryption_key_path, 'wb') as f:
                 f.write(encryption_key)
+
         messagebox.showinfo("Success", "Message encrypted and signed successfully!")
     except Exception as e:
         messagebox.showerror("Error", f"File saving failed: {e}")
 
 # Function to decrypt and verify a message
 def decrypt_and_verify_message(encrypted_message_path, metadata_path, signature_path, sender_public_key_path,
-                               recipient_private_key_path, password):
+                               recipient_private_key_path, password,simetric_key_path):
+
     try:
         with open(metadata_path, 'r') as f:
             metadata = json.load(f)
+
+        signature = None
+        decrypted_message = None
 
         if metadata["radix64"]:
             with open(encrypted_message_path, 'r') as f:
                 encrypted_message = f.read()
             encrypted_message = base64.b64decode(encrypted_message)
+            if metadata["sign"]:
+                with open(signature_path, 'r') as f:
+                    signature = f.read()
+                signature=base64.b64decode(signature)
+            if metadata["encryption_algo"]:
+                with open(simetric_key_path,'r') as f:
+                    simetric_key = f.read()
+                simetric_key=base64.b64decode(simetric_key)
         else:
             with open(encrypted_message_path, 'rb') as f:
                 encrypted_message = f.read()
+            if metadata["sign"]:
+                with open(signature_path, 'rb') as f:
+                    signature = f.read()
+            if metadata["encryption_algo"]:
+                with open(simetric_key_path,'rb') as f:
+                    simetric_key = f.read()
 
-        signature = None
+        print(encrypted_message)
         if metadata["sign"]:
-            with open(signature_path, 'r') as f:
-                signature = base64.b64decode(f.read())
+            if metadata["compress"]:
+                signature=zlib.decompress(signature)
 
             with open(sender_public_key_path, 'rb') as f:
                 sender_public_key_pem = f.read()
@@ -313,23 +385,31 @@ def decrypt_and_verify_message(encrypted_message_path, metadata_path, signature_
             backend=default_backend()
         )
 
-        decrypted_message = None
+
         if metadata["encryption_algo"]:
+
+
             iv = encrypted_message[:16] if metadata["encryption_algo"] == "AES128" else encrypted_message[:8]
             encrypted_message = encrypted_message[16:] if metadata["encryption_algo"] == "AES128" else encrypted_message[8:]
-
-            with open(os.path.join(os.path.dirname(encrypted_message_path), "encryption_key.txt"), 'rb') as f:
-                encryption_key = f.read()
+            # now we need to decode symetric key with recievers rivate key
+            simetric_key = recipient_private_key.decrypt(
+                simetric_key,
+                padding.OAEP(
+                    mgf=padding.MGF1(algorithm=hashes.SHA1()),
+                    algorithm=hashes.SHA1(),
+                    label=None
+                )
+            )
 
             if metadata["encryption_algo"] == "AES128":
                 cipher = Cipher(
-                    algorithms.AES(encryption_key),
+                    algorithms.AES(simetric_key),
                     modes.CFB(iv),
                     backend=default_backend()
                 )
             elif metadata["encryption_algo"] == "TripleDES":
                 cipher = Cipher(
-                    algorithms.TripleDES(encryption_key),
+                    algorithms.TripleDES(simetric_key),
                     modes.CFB(iv),
                     backend=default_backend()
                 )
@@ -343,7 +423,11 @@ def decrypt_and_verify_message(encrypted_message_path, metadata_path, signature_
             if metadata["compress"]:
                 decrypted_message = zlib.decompress(decrypted_message)
         else:
-            decrypted_message = encrypted_message  # Treat it as plain text
+            if metadata["compress"]:
+                decrypted_message = zlib.decompress(encrypted_message)
+
+            else:
+                decrypted_message = encrypted_message  # Treat it as plain text
 
         if metadata["sign"]:
             try:
@@ -357,7 +441,7 @@ def decrypt_and_verify_message(encrypted_message_path, metadata_path, signature_
                 messagebox.showerror("Error", f"Signature verification failed: {e}")
                 return
 
-        decrypted_message = decrypted_message.decode()
+       # decrypted_message = decrypted_message.decode()
 
         save_path = filedialog.asksaveasfilename(title="Save Decrypted Message As", defaultextension=".txt",
                                                  filetypes=[("Text files", "*.txt")])
@@ -365,7 +449,7 @@ def decrypt_and_verify_message(encrypted_message_path, metadata_path, signature_
             messagebox.showerror("Error", "Destination file not selected.")
             return
 
-        with open(save_path, 'w') as f:
+        with open(save_path, 'wb') as f:
             f.write(decrypted_message)
 
         messagebox.showinfo("Success", "Message decrypted and signature verified successfully!")
@@ -391,6 +475,7 @@ def load_metadata(entries, decrypt_button):
         entries['metadata'].insert(0, metadata_path)
         entries['signature'].delete(0, tk.END)
         entries['signature'].insert(0, metadata_path.replace("metadata.json", "signature.txt"))
+        entries['simetric_key'] = metadata_path.replace("metadata.json", "encryption_key.txt")
 
     except Exception as e:
         messagebox.showerror("Error", f"Failed to load metadata: {e}")
@@ -558,7 +643,8 @@ def setup_gui():
     entries = {
         'enc_msg': entry_enc_msg,
         'metadata': entry_metadata,
-        'signature': entry_signature
+        'signature': entry_signature,
+        'simetric_key': None
     }
 
     decrypt_button = ttk.Button(frame_decrypt, text="Decrypt and Verify Message",
@@ -568,7 +654,9 @@ def setup_gui():
                                     entry_signature.get(),
                                     find_key_path(sender_pub_key_var.get())[1] if entries['signature'].get() else None,
                                     find_key_path(recipient_priv_key_var.get())[0],
-                                    entry_dec_password.get()
+                                    entry_dec_password.get(),
+                                    entries['simetric_key']
+
                                 ))
     decrypt_button.grid(row=6, columnspan=2, pady=10)
     decrypt_button.config(state=tk.DISABLED)
