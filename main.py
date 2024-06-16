@@ -14,12 +14,13 @@ from cryptography.hazmat.backends import default_backend
 from PIL import Image, ImageTk
 
 
-# Constants for limits
-MAX_MESSAGE_LENGTH = 1024  # Example limit for message length
-
 # List to store key evidence
 keys_list = []
-
+def join_path(x, y):
+    return os.path.join(x, y)
+def open_file(filename, mode):
+    with open(filename, mode) as file:
+        return file
 # Function to generate RSA key pair
 def generate_keys(name, email, key_size, password):
     try:
@@ -47,15 +48,14 @@ def generate_keys(name, email, key_size, password):
             format=serialization.PublicFormat.SubjectPublicKeyInfo
         )
 
-        private_key_path = os.path.join(key_dir, f"{name}_{email}_private_key.pem")
-        public_key_path = os.path.join(key_dir, f"{name}_{email}_public_key.pem")
+        f = open_file(join_path(key_dir, f"{name}_{email}_private_key.pem"), 'wb')
+        f.write(private_key_pem)
+        f = open_file(join_path(key_dir, f"{name}_{email}_public_key.pem"), 'wb')
+        f.write(public_key_pem)
 
-        with open(private_key_path, 'wb') as f:
-            f.write(private_key_pem)
-        with open(public_key_path, 'wb') as f:
-            f.write(public_key_pem)
-
-        keys_list.append((name, email, index, private_key_path, public_key_path))
+        keys_list.append((name, email, index,
+                          join_path(key_dir, f"{name}_{email}_private_key.pem"),
+                          join_path(key_dir, f"{name}_{email}_public_key.pem")))
         update_keys_listbox()
         update_comboboxes()
 
@@ -75,10 +75,9 @@ def import_keys():
         public_key_path = None
         for file in files:
             if file.endswith("_private_key.pem"):
-
-                private_key_path = os.path.join(key_dir, file)
+                private_key_path = join_path(key_dir, file)
             elif file.endswith("_public_key.pem"):
-                public_key_path = os.path.join(key_dir, file)
+                public_key_path = join_path(key_dir, file)
 
         name = os.path.basename(private_key_path).split('_')[0]
         email = os.path.basename(private_key_path).split('_')[1]
@@ -116,22 +115,23 @@ def export_keys():
 
         if key_dir:
             if key_type == 'yes':
-                new_private = os.path.join(key_dir, f"{key_entry[0]}_{key_entry[1]}_key_set{key_entry[2]}_private_key.pem")
-                new_public = os.path.join(key_dir, f"{key_entry[0]}_{key_entry[1]}_key_set{key_entry[2]}_public_key.pem")
+                path = f"{key_entry[0]}_{key_entry[1]}_key_set{key_entry[2]}"
+                new_private = join_path(key_dir, f"{path}_private_key.pem")
+                new_public = join_path(key_dir, f"{path}_public_key.pem")
                 private_key_path = key_entry[3]
 
                 if private_key_path:
-                    with open(private_key_path, 'rb') as key_file:
-                        with open(new_private, 'wb') as f:
-                            f.write(key_file.read())
+                    key_file = open_file(private_key_path, 'rb')
+                    f = open_file(new_private, 'wb')
+                    f.write(key_file.read())
 
 
 
             public_key_path = key_entry[4]
             if public_key_path:
-                with open(public_key_path, 'rb') as key_file:
-                    with open(new_public, 'wb') as f:
-                        f.write(key_file.read())
+                key_file = open_file(public_key_path, 'rb')
+                f = open_file(new_public, 'wb')
+                f.write(key_file.read())
 
     messagebox.showinfo("Success", "Key(s) exported successfully!")
 
@@ -146,7 +146,7 @@ def delete_keys():
         key_entry = keys_list.pop(index)
         os.remove(key_entry[3])  # Remove private key file
         os.remove(key_entry[4])  # Remove public key file
-        directories = glob.glob(os.path.join(f"{key_entry[0]}_{key_entry[1]}_key_set*"))
+        directories = glob.glob(join_path(f"{key_entry[0]}_{key_entry[1]}_key_set*"))
         for directory in directories:
             # Check if directory is empty
             if not os.listdir(directory):
@@ -180,7 +180,10 @@ def update_comboboxes():
 
 # Function to get key paths for dropdown menu
 def get_key_paths():
-    return [f"{key_entry[0]} ({key_entry[1]}) set {key_entry[2]}" for key_entry in keys_list]
+    ret_list = []
+    for key_entry in keys_list:
+        ret_list.append(f"{key_entry[0]} ({key_entry[1]}) set {key_entry[2]}" )
+    return ret_list
 
 # Function to find key path based on selection
 def find_key_path(selection):
@@ -192,8 +195,8 @@ def find_key_path(selection):
 # Function to encrypt and sign a message
 def encrypt_and_sign_message(message, recipient_public_key_path, encryption_algo, sign, compress, radix64,
                              signing_key_path, password):
-    if len(message) > MAX_MESSAGE_LENGTH:
-        messagebox.showerror("Error", f"Message length exceeds the limit of {MAX_MESSAGE_LENGTH} characters.")
+    if len(message) > 1024:
+        messagebox.showerror("Error", f"Message length exceeds the limit of 1024 characters.")
         return
 
     metadata = {
@@ -220,10 +223,9 @@ def encrypt_and_sign_message(message, recipient_public_key_path, encryption_algo
     signature = None
     if sign:
         try:
-            with open(signing_key_path, 'rb') as f:
-                signing_private_key_pem = f.read()
+            f = open_file(signing_key_path, 'rb')
             signing_private_key = serialization.load_pem_private_key(
-                signing_private_key_pem,
+                f.read(),
                 password=password.encode(),
                 backend=default_backend()
             )
@@ -243,8 +245,9 @@ def encrypt_and_sign_message(message, recipient_public_key_path, encryption_algo
 
     encryption_key = None
     if encryption_algo:
-        encryption_key = os.urandom(32) if encryption_algo == "AES128" else os.urandom(24)  # Key length
+        encryption_key = os.urandom(24)
         if encryption_algo == "AES128":
+            encryption_key = os.urandom(32)
             iv = os.urandom(16)
             cipher = Cipher(algorithms.AES(encryption_key), modes.CFB(iv), backend=default_backend())
         elif encryption_algo == "TripleDES":
@@ -276,8 +279,8 @@ def encrypt_and_sign_message(message, recipient_public_key_path, encryption_algo
 
     #encode this encryprion key wirh the public key of the reciever
     if encryption_key:
-        with open(recipient_public_key_path, 'rb') as f:
-            recipient_public_key_pem = f.read()
+        f = open_file(recipient_public_key_path, 'rb')
+        recipient_public_key_pem = f.read()
         recipient_public_key = serialization.load_pem_public_key(
             recipient_public_key_pem,
             backend=default_backend()
@@ -296,36 +299,36 @@ def encrypt_and_sign_message(message, recipient_public_key_path, encryption_algo
         messagebox.showerror("Error", "Destination directory not selected.")
         return
 
-    encrypted_message_path = os.path.join(save_path, "encrypted_message.txt")
-    metadata_path = os.path.join(save_path, "metadata.json")
-    signature_path = os.path.join(save_path, "signature.txt")
-    encryption_key_path = os.path.join(save_path, "encryption_key.txt")
+    encrypted_message_path = join_path(save_path, "encrypted_message.txt")
+    metadata_path = join_path(save_path, "metadata.json")
+    signature_path = join_path(save_path, "signature.txt")
+    encryption_key_path = join_path(save_path, "encryption_key.txt")
 
     try:
         if radix64:
-            with open(encrypted_message_path, 'w') as f:
-                f.write(encrypted_message)
+            f = open_file(encrypted_message_path, 'w')
+            f.write(encrypted_message)
             if signature:
-                with open(signature_path, 'w') as f:
-                    f.write(signature)
+                f = open_file(signature_path, 'w')
+                f.write(signature)
         elif not radix64 and not signature and not encryption_algo:
-            with open(encrypted_message_path, 'w') as f:
-                f.write(encrypted_message)
+            f = open_file(encrypted_message_path, 'w')
+            f.write(encrypted_message)
         else:
-            with open(encrypted_message_path, 'wb') as f:
-                f.write(encrypted_message)
+            f = open_file(encrypted_message_path, 'wb')
+            f.write(encrypted_message)
 
             if signature:
-                with open(signature_path, 'wb') as f:
-                    f.write(signature)
+                f = open_file(signature_path, 'wb')
+                f.write(signature)
 
 
-        with open(metadata_path, 'w') as f:
-            json.dump(metadata, f)
+        f = open_file(metadata_path, 'w')
+        json.dump(metadata, f)
 
         if encryption_key:
-            with open(encryption_key_path, 'wb') as f:
-                f.write(encryption_key)
+            f = open_file(encryption_key_path, 'wb')
+            f.write(encryption_key)
 
         messagebox.showinfo("Success", "Message encrypted and signed successfully!")
     except Exception as e:
@@ -336,48 +339,48 @@ def decrypt_and_verify_message(encrypted_message_path, metadata_path, signature_
                                recipient_private_key_path, password,simetric_key_path):
 
     try:
-        with open(metadata_path, 'r') as f:
-            metadata = json.load(f)
+        f = open_file(metadata_path, 'r')
+        metadata = json.load(f)
 
         signature = None
         decrypted_message = None
 
         if metadata["radix64"]:
-            with open(encrypted_message_path, 'r') as f:
-                encrypted_message = f.read()
+            f = open_file(encrypted_message_path, 'r')
+            encrypted_message = f.read()
             encrypted_message = base64.b64decode(encrypted_message)
             if metadata["sign"]:
-                with open(signature_path, 'r') as f:
-                    signature = f.read()
+                f = open_file(signature_path, 'r')
+                signature = f.read()
                 signature=base64.b64decode(signature)
             if metadata["encryption_algo"]:
-                with open(simetric_key_path,'r') as f:
-                    simetric_key = f.read()
+                f = open_file(simetric_key_path,'r')
+                simetric_key = f.read()
                 simetric_key=base64.b64decode(simetric_key)
         else:
-            with open(encrypted_message_path, 'rb') as f:
-                encrypted_message = f.read()
+            f = open_file(encrypted_message_path, 'rb')
+            encrypted_message = f.read()
             if metadata["sign"]:
-                with open(signature_path, 'rb') as f:
-                    signature = f.read()
+                f = open_file(signature_path, 'rb')
+                signature = f.read()
             if metadata["encryption_algo"]:
-                with open(simetric_key_path,'rb') as f:
-                    simetric_key = f.read()
+                f = open_file(simetric_key_path,'rb')
+                simetric_key = f.read()
 
         print(encrypted_message)
         if metadata["sign"]:
             if metadata["compress"]:
                 signature=zlib.decompress(signature)
 
-            with open(sender_public_key_path, 'rb') as f:
-                sender_public_key_pem = f.read()
+            f = open_file(sender_public_key_path, 'rb')
+            sender_public_key_pem = f.read()
             sender_public_key = serialization.load_pem_public_key(
                 sender_public_key_pem,
                 backend=default_backend()
             )
 
-        with open(recipient_private_key_path, 'rb') as f:
-            recipient_private_key_pem = f.read()
+        f = open_file(recipient_private_key_path, 'rb')
+        recipient_private_key_pem = f.read()
 
         recipient_private_key = serialization.load_pem_private_key(
             recipient_private_key_pem,
@@ -388,9 +391,13 @@ def decrypt_and_verify_message(encrypted_message_path, metadata_path, signature_
 
         if metadata["encryption_algo"]:
 
+            if metadata["encryption_algo"] == "AES128":
+                iv = encrypted_message[:16]
+                encrypted_message = encrypted_message[16:]
+            else:
+                iv = encrypted_message[:8]
+                encrypted_message = encrypted_message[8:]
 
-            iv = encrypted_message[:16] if metadata["encryption_algo"] == "AES128" else encrypted_message[:8]
-            encrypted_message = encrypted_message[16:] if metadata["encryption_algo"] == "AES128" else encrypted_message[8:]
             # now we need to decode symetric key with recievers rivate key
             simetric_key = recipient_private_key.decrypt(
                 simetric_key,
@@ -449,8 +456,8 @@ def decrypt_and_verify_message(encrypted_message_path, metadata_path, signature_
             messagebox.showerror("Error", "Destination file not selected.")
             return
 
-        with open(save_path, 'wb') as f:
-            f.write(decrypted_message)
+        f = open_file(save_path, 'wb')
+        f.write(decrypted_message)
 
         messagebox.showinfo("Success", "Message decrypted and signature verified successfully!")
     except Exception as e:
@@ -464,8 +471,8 @@ def load_metadata(entries, decrypt_button):
         return
 
     try:
-        with open(metadata_path, 'r') as f:
-            metadata = json.load(f)
+        f = open_file(metadata_path, 'r')
+        metadata = json.load(f)
 
         decrypt_button.config(state=tk.NORMAL)
 
@@ -573,7 +580,10 @@ def setup_gui():
 
     # Dropdown for recipient public key
     recipient_pub_key_paths = get_key_paths()
-    recipient_pub_key_var = tk.StringVar(value=recipient_pub_key_paths[0] if recipient_pub_key_paths else "")
+    if recipient_pub_key_paths:
+        recipient_pub_key_var = tk.StringVar(value=recipient_pub_key_paths[0])
+    else:
+        recipient_pub_key_var = tk.StringVar(value="")
     recipient_pub_key_dropdown = ttk.Combobox(frame_encrypt, textvariable=recipient_pub_key_var,
                                               values=recipient_pub_key_paths)
     recipient_pub_key_dropdown.grid(row=1, column=1, padx=5, pady=5)
@@ -626,13 +636,20 @@ def setup_gui():
 
     # Dropdown for sender public key
     sender_pub_key_paths = get_key_paths()
-    sender_pub_key_var = tk.StringVar(value=sender_pub_key_paths[0] if sender_pub_key_paths else "")
+    if sender_pub_key_paths:
+        sender_pub_key_var = tk.StringVar(value=sender_pub_key_paths[0])
+    else:
+        sender_pub_key_var = tk.StringVar(value="")
     sender_pub_key_dropdown = ttk.Combobox(frame_decrypt, textvariable=sender_pub_key_var, values=sender_pub_key_paths)
     sender_pub_key_dropdown.grid(row=3, column=1, padx=5, pady=5)
 
     # Dropdown for recipient private key
     recipient_priv_key_paths = get_key_paths()
-    recipient_priv_key_var = tk.StringVar(value=recipient_priv_key_paths[0] if recipient_priv_key_paths else "")
+    if recipient_priv_key_paths:
+        recipient_priv_key_var = tk.StringVar(value=recipient_priv_key_paths[0])
+    else:
+        recipient_priv_key_var = tk.StringVar(value="")
+
     recipient_priv_key_dropdown = ttk.Combobox(frame_decrypt, textvariable=recipient_priv_key_var,
                                                values=recipient_priv_key_paths)
     recipient_priv_key_dropdown.grid(row=4, column=1, padx=5, pady=5)
