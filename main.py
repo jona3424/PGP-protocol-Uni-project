@@ -18,9 +18,15 @@ from PIL import Image, ImageTk
 keys_list = []
 def join_path(x, y):
     return os.path.join(x, y)
-def open_file(filename, mode):
+def open_and_write_file(filename, mode, content):
     with open(filename, mode) as file:
-        return file
+        file.write(content)
+    return file
+
+def open_and_read_file(filename, mode):
+    with open(filename, mode) as file:
+        return file.read()
+
 # Function to generate RSA key pair
 def generate_keys(name, email, key_size, password):
     try:
@@ -48,10 +54,8 @@ def generate_keys(name, email, key_size, password):
             format=serialization.PublicFormat.SubjectPublicKeyInfo
         )
 
-        f = open_file(join_path(key_dir, f"{name}_{email}_private_key.pem"), 'wb')
-        f.write(private_key_pem)
-        f = open_file(join_path(key_dir, f"{name}_{email}_public_key.pem"), 'wb')
-        f.write(public_key_pem)
+        open_and_write_file(join_path(key_dir, f"{name}_{email}_private_key.pem"), 'wb', private_key_pem)
+        open_and_write_file(join_path(key_dir, f"{name}_{email}_public_key.pem"), 'wb', public_key_pem)
 
         keys_list.append((name, email, index,
                           join_path(key_dir, f"{name}_{email}_private_key.pem"),
@@ -121,17 +125,16 @@ def export_keys():
                 private_key_path = key_entry[3]
 
                 if private_key_path:
-                    key_file = open_file(private_key_path, 'rb')
-                    f = open_file(new_private, 'wb')
-                    f.write(key_file.read())
+
+                    key_file = open_and_read_file(private_key_path, 'rb')
+                    f = open_and_write_file(new_private, 'wb',key_file)
 
 
 
             public_key_path = key_entry[4]
             if public_key_path:
-                key_file = open_file(public_key_path, 'rb')
-                f = open_file(new_public, 'wb')
-                f.write(key_file.read())
+                key_file = open_and_read_file(public_key_path, 'rb')
+                f = open_and_write_file(new_public, 'wb',key_file)
 
     messagebox.showinfo("Success", "Key(s) exported successfully!")
 
@@ -207,23 +210,11 @@ def encrypt_and_sign_message(message, recipient_public_key_path, encryption_algo
     }
 
     encrypted_message = message
-    #there are 3 cases first when we jus want to sign then when we want just to encrypt and when we want to encrypt and sign
-    #after all that we check if we want to convert the message to radix64
-    #if we want to sign the message we just sign it and then check zip flag and zip if needed
-    #if we want to encrypt the message we first zip the message if needed and then encrypt it also we need to encrypt the simetric enctyption_key with the public key of the reciever
-    #if we want to encrypt and sign we first sign the message zip if needed and then we encrypt the message and the encryption_key and also we need to encrypt the simetric enctyption_key with the public key of the reciever
-    #encrypt the message is done by aes or tripledes algorithms based on what is user choice
-    #after all that we check if we want to convert the message to radix64 for every case
-    #if we want to convert the message to radix64 we do that
-    #after all that we save the message to the file
-    #if we have a signature we save it to the file
-    #if we have a encryption_key we save it to the file
-    #we save metadata to the file
 
     signature = None
     if sign:
         try:
-            f = open_file(signing_key_path, 'rb')
+            f = open_and_read_file(signing_key_path, 'rb')
             signing_private_key = serialization.load_pem_private_key(
                 f.read(),
                 password=password.encode(),
@@ -279,7 +270,7 @@ def encrypt_and_sign_message(message, recipient_public_key_path, encryption_algo
 
     #encode this encryprion key wirh the public key of the reciever
     if encryption_key:
-        f = open_file(recipient_public_key_path, 'rb')
+        f = open_and_write_file(recipient_public_key_path, 'rb')
         recipient_public_key_pem = f.read()
         recipient_public_key = serialization.load_pem_public_key(
             recipient_public_key_pem,
@@ -306,28 +297,28 @@ def encrypt_and_sign_message(message, recipient_public_key_path, encryption_algo
 
     try:
         if radix64:
-            f = open_file(encrypted_message_path, 'w')
+            f = open_and_write_file(encrypted_message_path, 'w')
             f.write(encrypted_message)
             if signature:
-                f = open_file(signature_path, 'w')
+                f = open_and_write_file(signature_path, 'w')
                 f.write(signature)
         elif not radix64 and not signature and not encryption_algo:
-            f = open_file(encrypted_message_path, 'w')
+            f = open_and_write_file(encrypted_message_path, 'w')
             f.write(encrypted_message)
         else:
-            f = open_file(encrypted_message_path, 'wb')
+            f = open_and_write_file(encrypted_message_path, 'wb')
             f.write(encrypted_message)
 
             if signature:
-                f = open_file(signature_path, 'wb')
+                f = open_and_write_file(signature_path, 'wb')
                 f.write(signature)
 
 
-        f = open_file(metadata_path, 'w')
+        f = open_and_write_file(metadata_path, 'w')
         json.dump(metadata, f)
 
         if encryption_key:
-            f = open_file(encryption_key_path, 'wb')
+            f = open_and_write_file(encryption_key_path, 'wb')
             f.write(encryption_key)
 
         messagebox.showinfo("Success", "Message encrypted and signed successfully!")
@@ -339,32 +330,32 @@ def decrypt_and_verify_message(encrypted_message_path, metadata_path, signature_
                                recipient_private_key_path, password,simetric_key_path):
 
     try:
-        f = open_file(metadata_path, 'r')
+        f = open_and_write_file(metadata_path, 'r')
         metadata = json.load(f)
 
         signature = None
         decrypted_message = None
 
         if metadata["radix64"]:
-            f = open_file(encrypted_message_path, 'r')
+            f = open_and_write_file(encrypted_message_path, 'r')
             encrypted_message = f.read()
             encrypted_message = base64.b64decode(encrypted_message)
             if metadata["sign"]:
-                f = open_file(signature_path, 'r')
+                f = open_and_write_file(signature_path, 'r')
                 signature = f.read()
                 signature=base64.b64decode(signature)
             if metadata["encryption_algo"]:
-                f = open_file(simetric_key_path,'r')
+                f = open_and_write_file(simetric_key_path, 'r')
                 simetric_key = f.read()
                 simetric_key=base64.b64decode(simetric_key)
         else:
-            f = open_file(encrypted_message_path, 'rb')
+            f = open_and_write_file(encrypted_message_path, 'rb')
             encrypted_message = f.read()
             if metadata["sign"]:
-                f = open_file(signature_path, 'rb')
+                f = open_and_write_file(signature_path, 'rb')
                 signature = f.read()
             if metadata["encryption_algo"]:
-                f = open_file(simetric_key_path,'rb')
+                f = open_and_write_file(simetric_key_path, 'rb')
                 simetric_key = f.read()
 
         print(encrypted_message)
@@ -372,14 +363,14 @@ def decrypt_and_verify_message(encrypted_message_path, metadata_path, signature_
             if metadata["compress"]:
                 signature=zlib.decompress(signature)
 
-            f = open_file(sender_public_key_path, 'rb')
+            f = open_and_write_file(sender_public_key_path, 'rb')
             sender_public_key_pem = f.read()
             sender_public_key = serialization.load_pem_public_key(
                 sender_public_key_pem,
                 backend=default_backend()
             )
 
-        f = open_file(recipient_private_key_path, 'rb')
+        f = open_and_write_file(recipient_private_key_path, 'rb')
         recipient_private_key_pem = f.read()
 
         recipient_private_key = serialization.load_pem_private_key(
@@ -456,7 +447,7 @@ def decrypt_and_verify_message(encrypted_message_path, metadata_path, signature_
             messagebox.showerror("Error", "Destination file not selected.")
             return
 
-        f = open_file(save_path, 'wb')
+        f = open_and_write_file(save_path, 'wb')
         f.write(decrypted_message)
 
         messagebox.showinfo("Success", "Message decrypted and signature verified successfully!")
@@ -471,7 +462,7 @@ def load_metadata(entries, decrypt_button):
         return
 
     try:
-        f = open_file(metadata_path, 'r')
+        f = open_and_write_file(metadata_path, 'r')
         metadata = json.load(f)
 
         decrypt_button.config(state=tk.NORMAL)

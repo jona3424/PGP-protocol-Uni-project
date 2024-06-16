@@ -5,20 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b954037b-6cfe-47c2-a218-f56f25c04a6e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set1/nikola_nikola@gmail.com_private_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set1/nikola_nikola@gmail.com_public_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set2/nikola_nikola@gmail.com_private_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set2/nikola_nikola@gmail.com_public_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set3/nikola_nikola@gmail.com_private_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set3/nikola_nikola@gmail.com_public_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vanja_vanjy@gmail.com_key_set1/vanja_vanjy@gmail.com_private_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vanja_vanjy@gmail.com_key_set1/vanja_vanjy@gmail.com_public_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/a_a_key_set1/a_a_private_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/a_a_key_set2/a_a_private_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/a_a_key_set3/a_a_private_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/a_a_key_set3/a_a_public_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lestra_lestra@lestra.hub_key_set1/lestra_lestra@lestra.hub_private_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lestra_lestra@lestra.hub_key_set2/lestra_lestra@lestra.hub_private_key.pem" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/encrypted_message.txt" beforeDir="false" afterPath="$PROJECT_DIR$/encrypted_message.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/encryption_key.txt" beforeDir="false" afterPath="$PROJECT_DIR$/encryption_key.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/metadata.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/signature.txt" beforeDir="false" afterPath="$PROJECT_DIR$/signature.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +43,10 @@
             <RecentBranchesForRepo>
               <option name="branches">
                 <list>
+                  <RecentBranch>
+                    <option name="branchName" value="vanjy-refactor" />
+                    <option name="lastUsedInstant" value="1718540928" />
+                  </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="nikoly-working" />
                     <option name="lastUsedInstant" value="1718474884" />
@@ -86,10 +84,10 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Python.main.executor": "Run",
+    "Python.main.executor": "Debug",
     "Python.test.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "nikoly-working",
+    "git-widget-placeholder": "vanjy-refactor",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -189,6 +187,9 @@
       <workItem from="1718391618687" duration="1062000" />
       <workItem from="1718393375780" duration="937000" />
       <workItem from="1718452864987" duration="17706000" />
+      <workItem from="1718485640446" duration="94000" />
+      <workItem from="1718497855683" duration="25000" />
+      <workItem from="1718540355939" duration="1617000" />
     </task>
     <servers />
   </component>
@@ -214,19 +215,14 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
-          <line>185</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>337</line>
-          <option name="timeStamp" value="10" />
+          <line>27</line>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pythonProject$test.coverage" NAME="test Coverage Results" MODIFIED="1718391664024" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/pythonProject$main.coverage" NAME="main Coverage Results" MODIFIED="1718485503234" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/pythonProject$main.coverage" NAME="main Coverage Results" MODIFIED="1718541623934" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
