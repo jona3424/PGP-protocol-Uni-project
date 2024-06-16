@@ -5,14 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b954037b-6cfe-47c2-a218-f56f25c04a6e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/a_a_key_set1/a_a_private_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/a_a_key_set2/a_a_private_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/a_a_key_set3/a_a_private_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/a_a_key_set3/a_a_public_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lestra_lestra@lestra.hub_key_set1/lestra_lestra@lestra.hub_private_key.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lestra_lestra@lestra.hub_key_set2/lestra_lestra@lestra.hub_private_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vanja_vanja@gmail.com_key_set1/vanja_vanja@gmail.com_private_key.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vanja_vanja@gmail.com_key_set1/vanja_vanja@gmail.com_public_key.pem" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a_a_key_set1/a_a_private_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/a_a_key_set2/a_a_private_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/a_a_key_set3/a_a_private_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/a_a_key_set3/a_a_public_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/encrypted_message.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/encryption_key.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/g_g_key_set1/g_g_private_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/g_g_key_set1/g_g_public_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/get-pip.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lestra_lestra@lestra.hub_key_set1/lestra_lestra@lestra.hub_private_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lestra_lestra@lestra.hub_key_set2/lestra_lestra@lestra.hub_private_key.pem" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/metadata.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/n_n_key_set1/n_n_private_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/n_n_key_set1/n_n_public_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set1/nikola_nikola@gmail.com_private_key.pem" beforeDir="false" afterPath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set1/nikola_nikola@gmail.com_private_key.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set1/nikola_nikola@gmail.com_public_key.pem" beforeDir="false" afterPath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set1/nikola_nikola@gmail.com_public_key.pem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set2/nikola_nikola@gmail.com_private_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set2/nikola_nikola@gmail.com_public_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set3/nikola_nikola@gmail.com_private_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nikola_nikola@gmail.com_key_set3/nikola_nikola@gmail.com_public_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/signature.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vanja_vanjy@gmail.com_key_set1/vanja_vanjy@gmail.com_private_key.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vanja_vanjy@gmail.com_key_set1/vanja_vanjy@gmail.com_public_key.pem" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,21 +101,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Python.main.executor": "Debug",
-    "Python.test.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "vanjy-refactor",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;vanjy-refactor&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\petri\OneDrive\Desktop\zp proj\pythonProject" />
@@ -210,19 +230,8 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>27</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pythonProject$test.coverage" NAME="test Coverage Results" MODIFIED="1718391664024" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/pythonProject$main.coverage" NAME="main Coverage Results" MODIFIED="1718541623934" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/pythonProject$main.coverage" NAME="main Coverage Results" MODIFIED="1718549133476" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
